@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 public class ZD extends Tetromino {
     public ZD (){
         cells = new Cell[1];
-        cells[0] = new Cell(0,4,Tetris.O);
+        cells[0] = new Cell(0,4,Tetris.WALL);
         type = 1;
     }
     private Boolean haveTime = true;

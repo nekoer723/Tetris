@@ -8,6 +8,10 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.MenuKeyEvent;
+import javax.swing.event.MenuKeyListener;
 
 /*
  * 俄罗斯方块的主类:
@@ -21,25 +25,130 @@ import javax.swing.*;
 
 public class Tetris extends JPanel{
     private static final int ZDType = 1;
-    private static final int TenType = 2;
-    public static Tetromino randomOne() {
+    //private static final int TenType = 2;
+    private  Boolean ModelU = true;
+    private  Boolean ModelTen = true;
+    private  Boolean ModelZD = true;
+
+
+    public  Tetromino randomOne() {
 //随机生成方块,七种方块形状分别为O,T,I,J,L,S,Z
-
-
         Tetromino  t = null;
-        int num = (int)(Math.random()*10);
-        switch(num) {
-            case 0:t = new O();break;
-            case 1:t = new T();break;
-            case 2:t = new I();break;
-            case 3:t = new J();break;
-            case 4:t = new L();break;
-            case 5:t = new S();break;
-            case 6:t = new Z();break;
-            case 7:t = new ZD();break;
-            case 8:t = new U();break;
-            case 9:t = new Ten();break;
+        if (ModelU){
+            if(ModelTen){
+                int num = (int)(Math.random()*10);
+                switch(num) {
+                    case 0:t = new O();break;
+                    case 1:t = new T();break;
+                    case 2:t = new I();break;
+                    case 3:t = new J();break;
+                    case 4:t = new L();break;
+                    case 5:t = new S();break;
+                    case 6:t = new Z();break;
+                    case 7:t = new ZD();break;
+                    case 8:t = new U();break;
+                    case 9:t = new Ten();break;
+                }
+            }else {
+                if(ModelZD){
+                    int num = (int)(Math.random()*9);
+                    switch(num) {
+                        case 0:t = new O();break;
+                        case 1:t = new T();break;
+                        case 2:t = new I();break;
+                        case 3:t = new J();break;
+                        case 4:t = new L();break;
+                        case 5:t = new S();break;
+                        case 6:t = new Z();break;
+                        case 7:t = new ZD();break;
+                        case 8:t = new U();break;
+                        //case 9:t = new Ten();break;
+                    }
+                }
+                else {
+                    int num = (int)(Math.random()*8);
+                    switch(num) {
+                        case 0:t = new O();break;
+                        case 1:t = new T();break;
+                        case 2:t = new I();break;
+                        case 3:t = new J();break;
+                        case 4:t = new L();break;
+                        case 5:t = new S();break;
+                        case 6:t = new Z();break;
+                        //case 7:t = new ZD();break;
+                        case 7:t = new U();break;
+                        //case 9:t = new Ten();break;
+                    }
+                }
+            }
+        }else {
+            if(ModelTen){
+                int num = (int)(Math.random()*9);
+                switch(num) {
+                    case 0:t = new O();break;
+                    case 1:t = new T();break;
+                    case 2:t = new I();break;
+                    case 3:t = new J();break;
+                    case 4:t = new L();break;
+                    case 5:t = new S();break;
+                    case 6:t = new Z();break;
+                    case 7:t = new ZD();break;
+                    //case 8:t = new U();break;
+                    case 8:t = new Ten();break;
+                }
+            }else {
+                if(ModelZD){
+                    int num = (int)(Math.random()*8);
+                    switch(num) {
+                        case 0:t = new O();break;
+                        case 1:t = new T();break;
+                        case 2:t = new I();break;
+                        case 3:t = new J();break;
+                        case 4:t = new L();break;
+                        case 5:t = new S();break;
+                        case 6:t = new Z();break;
+                        case 7:t = new ZD();break;
+                        //case 8:t = new U();break;
+                        //case 9:t = new Ten();break;
+                    }
+                }
+                else {
+                    int num = (int)(Math.random()*7);
+                    switch(num) {
+                        case 0:t = new O();break;
+                        case 1:t = new T();break;
+                        case 2:t = new I();break;
+                        case 3:t = new J();break;
+                        case 4:t = new L();break;
+                        case 5:t = new S();break;
+                        case 6:t = new Z();break;
+                        //case 7:t = new ZD();break;
+                        //case 8:t = new U();break;
+                        //case 9:t = new Ten();break;
+                    }
+                }
+            }
         }
+
+        if(ModelU&&ModelTen&&ModelZD){
+
+        }
+        else if(ModelTen&&ModelZD){
+            int num = (int)(Math.random()*9);
+            switch(num) {
+                case 0:t = new O();break;
+                case 1:t = new T();break;
+                case 2:t = new I();break;
+                case 3:t = new J();break;
+                case 4:t = new L();break;
+                case 5:t = new S();break;
+                case 6:t = new Z();break;
+                case 7:t = new ZD();break;
+                //case 8:t = new U();break;
+                case 8:t = new Ten();break;
+            }
+        }
+
         return t;
     }
     int flag = 0;
@@ -71,12 +180,14 @@ public class Tetris extends JPanel{
     public static BufferedImage L;
     public static BufferedImage S;
     public static BufferedImage Z;
+    public static BufferedImage WALL;
     public static BufferedImage background;//游戏背景
     public static BufferedImage game_over;//游戏结束
 
     static {
         try {
             //getResource(String url) url:加载图片的路径 相对位置是同包下
+            WALL = ImageIO.read(Tetris.class.getResource("images/Add.png"));
             T = ImageIO.read(Tetris.class.getResource("images/T.png"));
             O = ImageIO.read(Tetris.class.getResource("images/O.png"));
             I = ImageIO.read(Tetris.class.getResource("images/I.png"));
@@ -205,15 +316,39 @@ public class Tetris extends JPanel{
 
     public void destroyLine(int row){
         if (isFullLine(row)){
-            for(int r = row-1;r>=0;r--){
-                reFreshLine(r);
-            }
+            reFresh(row,0);
             timer.restart();
         }
-    }
 
+//        int flag = 0;
+//        for(int c = 0;c<10;c++){
+//            if(wall[row][c]==null){
+//
+//            }else {
+//                if(wall[row][c].getImage() == T)
+//                    flag = 1;
+//            }
+//
+//        }
+//        if (isFullLine(row)){
+//            reFresh(row,flag);
+//            if(flag == 1){
+//                for(int r = row-1;r>=0;r--){
+//                    reFreshLine(r);
+//                }
+//
+//            }
+//            timer.restart();
+//        }
+    }
     public void reFreshLine(int r) {
-        //int r = ;
+
+//        if(flag == 0){
+//            for (int c = 0;c<10;c++){
+//                wall[r+1][c] = wall[r][c];
+//            }
+//            return;
+//        }
         for(int c = 0;c<10;c++){
             if(wall[r][c] == null){
                 if(wall[r+1][c]==null)
@@ -223,16 +358,49 @@ public class Tetris extends JPanel{
                         wall[r+1][c]=null;
                 }
             }
-
             else{
-                if(wall[r+1][c]==null)
-                    wall[r+1][c]=wall[r][c];
-                else {
-                    if(wall[r+1][c].getImage()!=T)
+                if(wall[r][c].getImage()==T){
+                    if(wall[r+1][c]==null){
+                    }
+                    else {
+                        if(wall[r+1][c].getImage()!=T){
+                            wall[r+1][c] = null;
+                        }
+                    }
+                }else {
+                    if(wall[r+1][c]==null)
                         wall[r+1][c]=wall[r][c];
+                    else {
+                        if(wall[r+1][c].getImage()!=T)
+                            wall[r+1][c]=wall[r][c];
+                    }
                 }
             }
         }
+    }
+
+    public void reFresh(int r,int flag){
+        if (flag == 0){
+            for (int row = r-1;row>=0;row--){
+                for (int c= 0;c<10;c++){
+                    if(wall[row][c] == null){
+                        wall[row+1][c] = null;
+                    }else {
+                        wall[row+1][c] = wall[row][c];
+                    }
+                }
+            }
+        }
+//        if(flag == 0){
+//            Cell[] tmp = new Cell[10];
+//            for (int i =r;i>0;i--){
+//                wall[i] = wall[i-1];
+//            }
+//            for(int i = 0;i<10;i++){
+//                tmp[i] = null;
+//            }
+//            wall[0] = tmp;
+//        }
     }
 
     public void destroyLine(){
@@ -242,10 +410,22 @@ public class Tetris extends JPanel{
         /**
          * 请在下方补全代码
          */
+
         for(int i = 0;i<cells.length;i++){
-            if(isFullLine(cells[i].getRow())) {
+            while (isFullLine(cells[i].getRow())) {
+                int flag = 0;
+                for(int c = 0;c<10;c++){
+                    if(wall[cells[i].getRow()][c]==null){
+                    }else {
+                        if(wall[cells[i].getRow()][c].getImage() == T)
+                            flag = 1;
+                    }
+                }
+                reFresh(cells[i].getRow(),flag);
                for(int r = cells[i].getRow()-1;r>=0;r--){
-                   reFreshLine(r);
+                   if (flag == 1){
+                       reFreshLine(r);
+                   }
                }
                lines++;
                timer.restart();
@@ -290,7 +470,11 @@ public class Tetris extends JPanel{
                 // 获取最终的行号和列号
                 int row = c.getRow();
                 int col = c.getCol();
-                wall[row][col] = c;
+                Cell cell = new Cell(row,col,WALL);
+                if(c.getImage()==T)
+                    wall[row][col] = c;
+                else
+                    wall[row][col] = cell;
             }
         }
     }
@@ -333,7 +517,6 @@ public class Tetris extends JPanel{
         }
 
     }
-
     public void softDropAction() {
         if (canDrop()) {
             currentOne.softDrop();
@@ -344,7 +527,6 @@ public class Tetris extends JPanel{
             nextOne = randomOne();//再随机生成一个"下一个方块"
         }
     }
-
     public void handDropAction() {
         for (;;) {
             if (canDrop()) {
@@ -362,7 +544,6 @@ public class Tetris extends JPanel{
             game_state = GAMEOVER;
         }
     }
-
     public void rotateRightAction() {
         currentOne.rotateRight();
         if (outOfBounds() || coincide()) {//转过头了怎么办?这就是rotateLeft()方法的用处了
@@ -378,22 +559,21 @@ public class Tetris extends JPanel{
             }
         }
     }
-    int delay=10000;    //时间间隔，单位为毫秒
-    ActionListener taskPerformer = new ActionListener()
-    {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-                Cell[] tmp = wall[0];
-            System.arraycopy(wall, 1, wall, 0, 19);
-                wall[19] = tmp;
-                Random random = new Random();
+    //int delay=10000;    //时间间隔，单位为毫秒
+    ActionListener taskPerformer = e -> {
+            Cell[] tmp = wall[0];
+        System.arraycopy(wall, 1, wall, 0, 19);
+            wall[19] = tmp;
+            Random random = new Random();
+        creatLine(random);
+        while (isFullLine(19)){
             creatLine(random);
-            while (isFullLine(19)){
-                creatLine(random);
-            }
         }
     };
+    ActionListener taskPerformer2 = e -> {
 
+    };
+    Timer timer = new Timer(10000,taskPerformer);
     public void creatLine(Random random) {
         for (int i=0;i<10;i++){
             int r = random.nextInt()%2;
@@ -405,10 +585,18 @@ public class Tetris extends JPanel{
         }
     }
 
-    Timer timer = new Timer(delay,taskPerformer);
-    public void start() {//封装了游戏逻辑
+    public void restart(){
         game_state = PLAYING;
+        wall = new Cell[20][10];//画一个新的"墙"
+        currentOne = randomOne();
+        nextOne = randomOne();
+        totalScore = 0;//分数置为0
+        totalLine = 0;//列数置为0
+        timer.restart();
+    }
+    public void start() {//封装了游戏逻辑
         timer.start();
+        game_state = PLAYING;
         KeyListener l = new KeyAdapter() {
 
             public void keyPressed(KeyEvent e) {
@@ -426,17 +614,10 @@ public class Tetris extends JPanel{
                     }
                 }
                 if (code == KeyEvent.VK_ENTER||code == KeyEvent.VK_S) {
-                    game_state = PLAYING;
-                    wall = new Cell[20][10];//画一个新的"墙"
-                    currentOne = randomOne();
-                    nextOne = randomOne();
-                    totalScore = 0;//分数置为0
-                    totalLine = 0;//列数置为0
-                    timer.restart();
+                    restart();
                 }
                 if(game_state == PLAYING){
                     switch (code) {
-
                         case KeyEvent.VK_DOWN://按下缓慢下降
                             if(currentOne.type==ZDType){
                                 destroyOne();
@@ -457,7 +638,6 @@ public class Tetris extends JPanel{
                                 rotateRightAction();
                             }
                             break;
-
                         case KeyEvent.VK_SPACE://按空格直接到底
                             if (currentOne.type!=ZDType){
                                 handDropAction();
@@ -481,7 +661,6 @@ public class Tetris extends JPanel{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-
             if (game_state == PLAYING) {
                 if (canDrop()&&currentOne.getHaveTime()) {
                     currentOne.softDrop();
@@ -512,6 +691,7 @@ public class Tetris extends JPanel{
         for(int i = 1;i<20;i++){
             if (wall[i][col]!=null){
                 wall[i-1][col] = currentOne.getCells()[0];
+                //wall[i-1][col].setImage(WALL);
                 destroyLine(i-1);
                 flag = 0;
                 break;
@@ -519,6 +699,7 @@ public class Tetris extends JPanel{
         }
         if (flag == 1){
             wall[19][col] = currentOne.getCells()[0];
+            //wall[19][col].setImage(WALL);
             destroyLine(19);
         }
     }
@@ -529,20 +710,116 @@ public class Tetris extends JPanel{
 
         // 1:创建一个窗口对象
         JFrame frame = new JFrame("俄罗斯方块");
+        // 创建一个菜单栏
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu menu = new JMenu("难度");
+        JMenu menu1 = new JMenu("游戏扩展");
+        JMenu menu2 = new JMenu("设置2");
+        menuBar.add(menu);
+        menuBar.add(menu1);
+        //menuBar.add(menu2);
+
+        ButtonGroup level = new ButtonGroup();
+        JRadioButtonMenuItem level0 = new JRadioButtonMenuItem("无难度");
+        JRadioButtonMenuItem level1 = new JRadioButtonMenuItem("每十秒产生一行多余");
+        JRadioButtonMenuItem level2 = new JRadioButtonMenuItem("每五秒产生一行多余");
+        level.add(level0);
+        level.add(level1);
+        level.add(level2);
+        menu.add(level0);
+        menu.add(level1);
+        menu.add(level2);
+        JCheckBoxMenuItem tetrisU = new JCheckBoxMenuItem("U型方块");
+        JRadioButtonMenuItem tetris = new JRadioButtonMenuItem("关闭子弹");
+        JRadioButtonMenuItem tetrisTen = new JRadioButtonMenuItem("子弹和'十'型方块");
+        JRadioButtonMenuItem tetrisZD= new JRadioButtonMenuItem("子弹");
+        ButtonGroup model = new ButtonGroup();
+        model.add(tetris);
+        model.add(tetrisZD);
+        model.add(tetrisTen);
+        menu1.add(tetrisU);
+        menu1.addSeparator();
+        menu1.add(tetrisZD);
+        menu1.add(tetrisTen);
+        menu1.add(tetris);
+
         // 创建游戏界面，即面板
         Tetris panel = new Tetris();
         // 将面板嵌入窗口
+        //menuBar.setSize(35,100);
+        frame.setJMenuBar(menuBar);
         frame.add(panel);
+
         // 2:设置为可见
         frame.setVisible(true);
         // 3:设置窗口的尺寸
-        frame.setSize(535, 580);
+        frame.setSize(535, 600);
         // 4:设置窗口居中
         frame.setLocationRelativeTo(null);
         // 5:设置窗口关闭，即程序终止
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // 游戏的主要逻辑封装在start方法中
+        level1.setSelected(true);
+        level0.addChangeListener(e -> {
+            if(level0.isSelected()){
+                panel.timer.stop();
+                panel.timer = new Timer(50000000,panel.taskPerformer2);
+                panel.timer.start();
+            }
+        });
+        level1.addChangeListener(e -> {
+            if(level1.isSelected()){
+                panel.timer.stop();
+                panel.timer = new Timer(10000,panel.taskPerformer);
+                panel.timer.start();
+            }
+        });
+        level2.addChangeListener(e -> {
+            if(level2.isSelected()){
+                panel.timer.stop();
+                panel.timer = new Timer(5000,panel.taskPerformer);
+                panel.timer.start();
+            }
+        });
+        tetrisU.setSelected(true);
+        tetrisTen.setSelected(true);
+        tetrisU.addChangeListener(e -> {
+            if(tetrisU.isSelected()){
+                panel.ModelU = true;
+            }else {
+                panel.ModelU = false;
+            }
+        });
+        tetrisTen.addChangeListener(e -> {
+            if(tetrisU.isSelected()){
+                panel.ModelZD = true;
+                panel.ModelTen = true;
+            }else {
+                panel.ModelTen = false;
+                panel.ModelZD = false;
+            }
+        });
+        tetrisZD.addChangeListener(e -> {
+            if(tetrisZD.isSelected()){
+                panel.ModelZD = true;
+                panel.ModelTen = false;
+                //panel.restart();
+            }else {
+                panel.ModelZD= false;
+                //panel.ModelTen = false;
+            }
+        });
+        tetris.addChangeListener(e -> {
+            if(tetris.isSelected()){
+                panel.ModelZD = false;
+                panel.ModelTen = false;
+                panel.restart();
+            }else {
+                panel.ModelZD= false;
+                //panel.ModelTen = false;
+            }
+        });
         panel.start();
     }
-
 }
